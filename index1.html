@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #ff6347;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e5533d;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .game-over {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+            border: 2px dashed #ff0000;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffe6e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Guess The Number (1-100)</h1>
+        <input type="text" id="userGuess" placeholder="Enter your guess or Q to quit">
+        <button onclick="checkGuess()">Submit Guess</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const target = Math.floor(Math.random() * 100) + 1;
+
+        function checkGuess() {
+            const userInput = document.getElementById("userGuess").value;
+            const messageDiv = document.getElementById("message");
+
+            if (userInput.toUpperCase() === "Q") {
+                messageDiv.innerHTML = '<div class="game-over">-------Game Over--------</div>';
+                document.getElementById("userGuess").disabled = true;
+                document.querySelector("button").disabled = true;
+                return;
+            }
+
+            try {
+                const userChoice = parseInt(userInput);
+                if (isNaN(userChoice)) {
+                    messageDiv.innerHTML = "Please enter a valid number or 'Q' to quit.";
+                    return;
+                }
+
+                if (userChoice === target) {
+                    messageDiv.innerHTML = "Success: Correct Guess!! 🎉<br><div class='game-over'>-------Game Over--------</div>";
+                    document.getElementById("userGuess").disabled = true;
+                    document.querySelector("button").disabled = true;
+                } else if (userChoice < target) {
+                    messageDiv.innerHTML = "Your number is too small! Please choose a bigger number...";
+                } else {
+                    messageDiv.innerHTML = "Your number is too big! Please choose a smaller number...";
+                }
+            } catch (error) {
+                messageDiv.innerHTML = "Invalid input! Please enter a number or 'Q' to quit.";
+            }
+
+            document.getElementById("userGuess").value = "";
+        }
+
+        document.getElementById("userGuess").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkGuess();
+            }
+        });
+    </script>
+</body>
+</html>
